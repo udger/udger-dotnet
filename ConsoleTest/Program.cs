@@ -27,9 +27,9 @@ namespace ConsoleTest
             // set data dir (this program must right write to cache dir)
             parser.SetDataDir(@"C:\tmp");
 
-            // set You Acceskey (see http://udger.com/account/main) 
+            // set You Accesskey (see https://udger.com/account/main) 
             //parser.SetAccessKey("XXXXXX");
-            // or download the datafile manually from http://udger.com/resources/download
+            // or download the datafile manually from http://data.udger.com/
             
             //If you want information about fragments
             parser.SetParseFragments(false); //for future use, now has no meaning
