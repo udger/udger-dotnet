@@ -8,10 +8,10 @@ ADO.NET Data Provider for SQLite (included)
 Json.NET (included)
 
 ###Features
-Fast
-Written in C#
-Auto updated datafile and cache from remote server with version checking and checksum datafile
-Released under the GNU (LGPL v.3)
+- Fast
+- Written in C#
+- Auto updated datafile and cache from remote server with version checking and checksum datafile
+- Released under the GNU (LGPL v.3)
 
 
 ### Usage

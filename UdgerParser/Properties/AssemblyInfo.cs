@@ -9,8 +9,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("UdgerParser is a .NET lib for the udger datafile in Sqlite3 format.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Udger s.r.o.")]
-[assembly: AssemblyProduct("UdgerParser")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyProduct("Udger Local parser")]
+[assembly: AssemblyCopyright("Copyright © Udger s.r.o.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
