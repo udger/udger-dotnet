@@ -1,8 +1,8 @@
 ﻿/*
   UdgerParser - Test - Local parser lib 
  
-  author     Prokop Říha, Jaroslav Mallat (http://udger.com/)
-  copyright  Copyright (c) 2014-2015 udger.com
+  author     The Udger.com Team (info@udger.com)
+  copyright  Copyright (c) Udger s.r.o.
  
   license    GNU Lesser General Public License
   link       http://udger.com/products/local_parser
