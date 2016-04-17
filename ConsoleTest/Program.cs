@@ -9,48 +9,73 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
+using System.Data;
+using System.IO;
+using System.Net;
 using System.Text;
 using Udger.Parser;
+using System.Collections.Generic;
 
 namespace ConsoleTest
 {
     class Program
     {
         static void Main(string[] args)
-        {
+        {            
+
+            Udger.Parser.UserAgent a;
+            Udger.Parser.IPAddress i;
+
             // create a new UdgerParser object
-            UdgerParser parser = new UdgerParser(true);  // Development/Debug - debug info output to console
-            //UdgerParser parser = new UdgerParser(); // Production
+            UdgerParser parser = new UdgerParser(); 
 
             // set data dir (this program must right write to cache dir)
             parser.SetDataDir(@"C:\tmp");
-
             // set You Accesskey (see https://udger.com/account/main) 
-            //parser.SetAccessKey("XXXXXX");
-            // or download the datafile manually from http://data.udger.com/
+            //parser.SetAccessKey("XXXXXXX");
+            // or download the datafile manually from https://data.udger.com/
+
+            // set user agent and /or IP address
+            parser.ua = @"Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0";
+            parser.ip = "108.61.199.93";
             
-            //If you want information about fragments
-            parser.SetParseFragments(false); //for future use, now has no meaning
+            // parse
+            parser.parse();
+            // get information 
+            a = parser.userAgent;
+            i = parser.ipAddress;
 
 
-            //method "parse"
-            var useragent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; de) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/8888 Chrome anonymized by Abelssoft 1085275131";
-            // Gets information about the user agent
-            Dictionary<string, object> aa = parser.parse(useragent);
+            // set user agent and /or IP address
+            parser.ua = @"/5.0 (compatible; SeznamBot/3.2; +http://fulltext.sblog.cz/)";
+            parser.ip = "2001:41d0:8:d950:0:0:0:1";
+            parser.parse();
+            a = parser.userAgent;            
+            i = parser.ipAddress;
 
-            //method "isBot"
-            useragent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
-            //var ip = "100.43.81.130";
-            Dictionary<string, object> bb = parser.isBot(useragent);
-            useragent = "Mozilla/4.0 (compatible; MSIE ; Windows NT 6.0)";
-            bb = parser.isBot(useragent);
+            // set user agent and /or IP address
+            parser.ua = @"Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53\";
+            parser.ip = "2001:41d0:8:d950::1";
+            parser.parse();
+            a = parser.userAgent;
+            i = parser.ipAddress;
 
-            //method "account"
-            Dictionary<string, object> cc = parser.account();
+            // set user agent and /or IP address
+            parser.ip = "66.249.64.73";
+            parser.parse();
+            a = parser.userAgent;
+            i = parser.ipAddress;
+
+            // set user agent and /or IP address
+            parser.ua = @"Mozilla/5.0 (Playstation Vita 1.61) AppleWebKit/531.22.8 (KHTML, like Gecko) Silk/3.2";
+            parser.ip = "90.177.52.111";
+            parser.parse();
+            a = parser.userAgent;
+            i = parser.ipAddress;
             
-
         }
+
+        
     }
 }

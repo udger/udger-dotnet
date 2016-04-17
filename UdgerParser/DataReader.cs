@@ -1,27 +1,10 @@
-﻿/*
-  UdgerParser - Local parser lib
-  
-  UdgerParser class parses useragent strings based on a database downloaded from udger.com
- 
- 
-  author     The Udger.com Team (info@udger.com)
-  copyright  Copyright (c) Udger s.r.o.
-  
-  license    http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
-  link       http://udger.com/products/local_parser
-*/
-
+﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Data;
 using System.Data.SQLite;
 using System.Net;
 using System.IO;
-using System.Diagnostics;
-using System.ComponentModel;
-using System.Threading;
 using System.Security.Cryptography;
 
 
@@ -57,12 +40,10 @@ namespace Udger.Parser
             udger = _udger;
             try
             {
-                if (!Directory.Exists(data_dir))
-                    throw new Exception("Data dir not found");
+                this.validate();
 
                 if (!this.Connected)
-                {
-                    udger.WriteDebug("Open DB file: " + DataSourcePath);
+                {                    
                     if (!string.IsNullOrEmpty(this.access_key))                    
                     {
                         if (File.Exists(DataSourcePath))
@@ -71,7 +52,7 @@ namespace Udger.Parser
                             this.connected = true;
                             if (sqlite != null)
                             {
-                                DataTable _info_ = this.selectQuery("SELECT lastupdate,version FROM _info_ where key=1");
+                                DataTable _info_ = this.selectQuery("SELECT lastupdate,version FROM udger_db_info where key=1");
                                 if (_info_.Rows.Count > 0)
                                 {                                    
                                     DataRow row = _info_.Rows[0];
@@ -79,25 +60,18 @@ namespace Udger.Parser
                                     long lastUpdate = Convert.ToInt32(row["lastupdate"].ToString());
                                 
                                     if (lastUpdate + this.updateInteval < time)
-                                    {
-                                        udger.WriteDebug("Data is maybe outdated, check new data from server");
+                                    {                                        
                                         this.downloadFile(row["version"].ToString());
-                                    }
-                                    else
-                                    {
-                                        udger.WriteDebug("Data is current and will be used");
-                                    }                                    
+                                    }                                                                   
                                 }
                                 else
                                 {
-                                    udger.WriteDebug("Data is corrupted, download data");
                                     this.downloadFile();
                                 }
 
                             }
                         }
                         else {
-                            udger.WriteDebug("Data dir is empty, download data");
                             this.downloadFile();
                         }
                     }
@@ -147,11 +121,9 @@ namespace Udger.Parser
                 if (!string.IsNullOrEmpty(version))
                 {
                     if (this.serverVersion() == version)
-                    {
-                        udger.WriteDebug("Download skipped, existing data file is current");
-                        
+                    {                        
                         long time = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
-                        this.selectQuery("UPDATE _info_ SET lastupdate=" + time.ToString() + " WHERE key=1");
+                        this.selectQuery("UPDATE udger_db_info SET lastupdate=" + time.ToString() + " WHERE key=1");
                         return;
                     }
                 }
@@ -159,7 +131,6 @@ namespace Udger.Parser
 
                 using (WebClient myWebClient = new WebClient())
                 { 
-                    udger.WriteDebug("Downloading the data file");
                     if (sqlite != null)
                     {
                         
@@ -171,18 +142,13 @@ namespace Udger.Parser
                         
                     }
 
-                    myWebClient.DownloadFile(new Uri(baseUrl + access_key + @"/udgerdb.dat"), DataSourcePath);
+                    myWebClient.DownloadFile(new Uri(baseUrl + access_key + @"/udgerdb_v3.dat"), DataSourcePath);
                     myWebClient.Dispose();
 
                         
                     if (this.GetMD5HashFromFile(DataSourcePath) != this.serverHash())
                     {
                         File.Delete(DataSourcePath);
-                        udger.WriteDebug("Data file hash mismatch.");
-                    }
-                    else
-                    {
-                        udger.WriteDebug("File downloaded");
                     }
                 
                }
@@ -192,7 +158,7 @@ namespace Udger.Parser
                     this.connected = true;
                
                     long time = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
-                    this.selectQuery("UPDATE _info_ SET lastupdate=" + time.ToString() + " WHERE key=1");
+                    this.selectQuery("UPDATE udger_db_info SET lastupdate=" + time.ToString() + " WHERE key=1");
                }
             }
             catch (Exception e)
@@ -214,7 +180,7 @@ namespace Udger.Parser
         }
         private string serverHash()
         {
-            HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(baseUrl + access_key + @"/udgerdb_dat.md5");
+            HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(baseUrl + access_key + @"/udgerdb_v3_dat.md5");
             HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
             Stream stream = myHttpWebResponse.GetResponseStream();
             StreamReader reader = new StreamReader(stream);
@@ -229,7 +195,7 @@ namespace Udger.Parser
             if (File.Exists(this.DataSourcePath))
             {
                 string fileHash = this.GetMD5HashFromFile(DataSourcePath);
-                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(baseUrl + access_key +@"/udgerdb_dat.md5");
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(baseUrl + access_key + @"/udgerdb_v3_dat.md5");
                 HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
                 Stream stream = myHttpWebResponse.GetResponseStream();                 
                 StreamReader reader = new StreamReader(stream);
@@ -268,6 +234,45 @@ namespace Udger.Parser
               return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-",string.Empty).ToLower();
             }
           }
-        }  
+        }
+
+        private void validate()
+        {
+            bool writeAllow =false;
+            //bool writeDeny = false;
+            if (!Directory.Exists(data_dir))
+                throw new Exception("Data dir not found");
+
+            if (Directory.Exists(data_dir))
+            {
+                System.Security.AccessControl.AuthorizationRuleCollection rules;
+                if (File.Exists(this.DataSourcePath))
+                {
+                    rules = File.GetAccessControl(this.DataSourcePath).GetAccessRules(true, true,
+                                typeof(System.Security.Principal.SecurityIdentifier));
+
+                }
+                else
+                {
+                    if (this.access_key == "")
+                        throw new Exception("Empty acess key");
+
+                    rules = Directory.GetAccessControl(this.data_dir).GetAccessRules(true, true,
+                          typeof(System.Security.Principal.SecurityIdentifier));
+                }
+
+                foreach (System.Security.AccessControl.FileSystemAccessRule rule in rules)
+                {
+                    if ((System.Security.AccessControl.FileSystemRights.Write & rule.FileSystemRights) != System.Security.AccessControl.FileSystemRights.Write)
+                        continue;
+
+                    if (rule.AccessControlType == System.Security.AccessControl.AccessControlType.Allow)
+                        writeAllow = true;
+
+                }
+                if (!writeAllow)
+                    throw new Exception("Error. Cannot write to data dir.");
+            }
+        }
     }
 }
