@@ -1,4 +1,4 @@
-# ![Udger](https://udger.com/pub/img/logo_github2.png "leader in the detection of browsers, mobiles, tablets, Smart TV") client for .NET (data ver. 3)
+# Udger client for .NET (data ver. 3)
 Local parser is very fast and accurate useragent string detection solution. Enables developers to locally install and integrate a highly-scalable product.
 We provide the detection of the devices (personal computer, tablet, Smart TV, Game console etc.), operating system and client SW type (browser, e-mail client etc.).
 It also provides information about IP addresses (Public proxies, VPN services, Tor exit nodes, Fake crawlers, Web scrapers .. etc.)
