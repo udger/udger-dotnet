@@ -6,11 +6,11 @@ It also provides information about IP addresses (Public proxies, VPN services, T
 ### Requirements
 - .NET Framework 4 or later.
 - ADO.NET Data Provider for SQLite (included)
+- datafile v3 (udgerdb_v3.dat) from https://data.udger.com/ 
 
 ###Features
 - Fast
 - Written in C#
-- Auto updated datafile and cache from remote server with version checking and checksum datafile
 - Released under the GNU (LGPL v.3)
 
 
@@ -20,8 +20,9 @@ Here's a quick example:
 
 ```csharp
 UdgerParser parser = new UdgerParser();
-parser.SetDataDir(@"C:\tmp");
-//parser.SetAccessKey("XXXXXX");
+// Set data dir (in this directory is stored data file: udgerdb_v3.dat)
+// Data file can be downloaded manually from https://data.udger.com/, but we recommend use udger-updater (https://udger.com/support/documentation/?doc=62)
+parser.SetDataDir(@"C:\udger");
 // set user agent and /or IP address
 parser.ua = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36";
 parser.ip = "2600:3c01::f03c:91ff:fe70:9208";

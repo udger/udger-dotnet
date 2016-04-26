@@ -17,8 +17,6 @@
 using System;
 using System.Text;
 using System.Data;
-using System.Net;
-using System.Security.Cryptography;
 using System.IO;
 
 namespace Udger.Parser
@@ -42,22 +40,19 @@ namespace Udger.Parser
         }
         #region setParser method
         /// <summary>
-        /// Set the udger.com You Acceskey
-        /// </summary> 
-        /// <param name="accessKey">You Acceskey</param>        
-        public void SetAccessKey(string accessKey) 
-        {
-            dt.access_key = accessKey;
-        }
-
-        /// <summary>
         /// Set the data directory
         /// </summary> 
         /// <param name="dataDir">string path cache directory</param>
         public void SetDataDir(string dataDir)
         {
+            if (!Directory.Exists(dataDir))
+                throw new Exception("Data dir not found");
+
             dt.data_dir = dataDir;
-            dt.DataSourcePath = dataDir + @"/udgerdb_v3.dat";
+            dt.DataSourcePath = dataDir + @"\udgerdb_v3.dat";            
+
+            if (!File.Exists(dt.DataSourcePath))
+                throw new Exception("Data file udgerdb_v3.dat not found");
         }
         #endregion
 
@@ -236,9 +231,7 @@ namespace Udger.Parser
                             this.prepareIp(ipTable.Rows[0]);
                         }
                         if (ipVer == 4)
-                        {
-                            //System.Net.IPAddress ip2Long;
-                            //System.Net.IPAddress.TryParse(_ip, out ip2Long);
+                        {                           
                             long ipLong = this.AddrToInt(_ip);//ip2Long.Address;
 
                             DataTable dataCenter = dt.selectQuery(@"select name, name_code, homepage
@@ -369,30 +362,7 @@ namespace Udger.Parser
             ipAddress.DatacenterHomepage = UdgerParser.ConvertToStr(_row["homepage"]);
         }
         #endregion
-
-        /*
-        private bool IsValidIp(string addr)
-        {
-            System.Net.IPAddress ip;
-            bool valid = !string.IsNullOrEmpty(addr) && System.Net.IPAddress.TryParse(addr, out ip);
-            return valid;
-        }
-        */
-        private string CreateMD5(string input)
-        {
-            // Use input string to calculate MD5 hash
-            MD5 md5 = System.Security.Cryptography.MD5.Create();
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-            byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-            // Convert the byte array to hexadecimal string
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hashBytes.Length; i++)
-            {
-                sb.Append(hashBytes[i].ToString("x2"));
-            }
-            return sb.ToString();
-        }
+             
 
         private static string ConvertToStr( object value)
         {
