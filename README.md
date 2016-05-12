@@ -8,6 +8,9 @@ It also provides information about IP addresses (Public proxies, VPN services, T
 - ADO.NET Data Provider for SQLite (included)
 - datafile v3 (udgerdb_v3.dat) from https://data.udger.com/ 
 
+### Automatic updates download
+- for autoupdate data use Udger data updater (https://udger.com/support/documentation/?doc=62)
+
 ###Features
 - Fast
 - Written in C#
