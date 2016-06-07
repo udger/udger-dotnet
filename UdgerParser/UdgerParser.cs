@@ -136,6 +136,11 @@ namespace Udger.Parser
                                         this.prepareClientRegex(row, match, ref client_id, ref client_class_id);
                                         break;
                                     }
+                                    else if (match.Success && match.Groups.Count == 1)
+                                    {
+                                        this.prepareClientRegex(row, match, ref client_id, ref client_class_id);
+                                        break;
+                                    }
                                 }
                             }
                     }

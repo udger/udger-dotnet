@@ -30,7 +30,7 @@ namespace ConsoleTest
             
 
             // Set user agent and /or IP address
-            parser.ua = @"Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0";
+            parser.ua = @"Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13E238";
             parser.ip = "108.61.199.93";
             
             // Parse
@@ -41,14 +41,14 @@ namespace ConsoleTest
 
 
             // Set user agent and /or IP address
-            parser.ua = @"/5.0 (compatible; SeznamBot/3.2; +http://fulltext.sblog.cz/)";
+            parser.ua = @"Mozilla/5.0 (compatible; SeznamBot/3.2; +http://fulltext.sblog.cz/)";
             parser.ip = "2001:41d0:8:d950:0:0:0:1";
             parser.parse();
             a = parser.userAgent;            
             i = parser.ipAddress;
 
             
-            parser.ua = @"Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53\";
+            parser.ua = @"Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53";
             parser.ip = "2001:41d0:8:d950::1";
             parser.parse();
             a = parser.userAgent;
