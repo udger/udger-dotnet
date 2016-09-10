@@ -35,6 +35,11 @@ Udger.Parser.UserAgent a = parser.userAgent;
 Udger.Parser.IPAddress i = parser.ipAddress;
 ```
 
+
+### Documentation for programmers
+- https://udger.com/pub/documentation/parser/NET/html/
+
+
 ### Author
 The Udger.com Team (info@udger.com)
 
