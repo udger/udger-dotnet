@@ -18,6 +18,7 @@ namespace Udger.Parser
         public string data_dir { get; set; }
         UdgerParser udger;
 
+
         public DataReader()
         {
 
