@@ -1,7 +1,17 @@
-﻿using System;
+﻿/*
+  UdgerParser - Local parser lib
+  
+  UdgerParser class parses useragent strings based on a database downloaded from udger.com
+ 
+ 
+  author     The Udger.com Team (info@udger.com)
+  copyright  Copyright (c) Udger s.r.o.
+  license    GNU Lesser General Public License
+  link       https://udger.com/products/local_parser
+ */
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Udger.Parser
 {
@@ -20,7 +30,8 @@ namespace Udger.Parser
             public TValue Value { get; set; }
         }
 
-        public LRUCache(int capacity = 1000)
+        #region Constructor
+        public LRUCache(int capacity)
         {
             if (capacity <= 0)
                 throw new ArgumentOutOfRangeException(
@@ -30,7 +41,9 @@ namespace Udger.Parser
             entries = new Dictionary<TKey, Node>();
             head = null;
         }
+        #endregion
 
+        #region public method    
         public void Set(TKey key, TValue value)
         {
             Node entry;
@@ -65,7 +78,9 @@ namespace Udger.Parser
 
             return true;
         }
+        #endregion
 
+        #region private method
         private void MoveToHead(Node entry)
         {
             if (entry == head || entry == null)
@@ -91,5 +106,6 @@ namespace Udger.Parser
             if (tail == entry)
                 tail = previous;
         }
+        #endregion
     }
 }

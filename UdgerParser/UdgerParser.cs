@@ -32,6 +32,7 @@ namespace Udger.Parser
 
         public string ip { get; set; }
         public string ua { get; set; }
+
         #region private Variables
         private struct IdRegString
         {
@@ -42,6 +43,7 @@ namespace Udger.Parser
         }
 
         private LRUCache<string, UserAgent> cache;
+        private bool useCache;
         private DataReader dt;
         private static WordDetector clientWordDetector;
         private static WordDetector deviceWordDetector;
@@ -51,6 +53,8 @@ namespace Udger.Parser
         private static List<IdRegString> osRegstringList;
         private static List<IdRegString> deviceRegstringList;
         #endregion
+
+        #region Constructor
         /// <summary>
         /// Constructor 
         /// </summary> 
@@ -59,24 +63,46 @@ namespace Udger.Parser
             dt = new DataReader();
             this.ua = "";
             this.ip = "";
-           // this.
-            cache = new LRUCache<string, UserAgent>();
+            this.useCache = true;
+            cache = new LRUCache<string, UserAgent>(10000);
 
         }
-        public UdgerParser(int cashCapcity)
+        /// <summary>
+        /// Constructor
+        /// </summary> 
+        /// <param name="LRUCashCapacity">int LRUCash Capacity (minimum is 1)</param>
+        public UdgerParser(int LRUCashCapacity = 10000)
         {
             dt = new DataReader();
             this.ua = "";
             this.ip = "";
-            cache = new LRUCache<string, UserAgent>(cashCapcity);
+            this.useCache = true;
+            cache = new LRUCache<string, UserAgent>(LRUCashCapacity);
 
         }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="useLRUCash">bool eneble/disable LRUCash</param>
+        /// <param name="LRUCashCapacity">int LRUCash Capacity (minimum is 1)</param>
+        public UdgerParser(bool useLRUCash = true, int LRUCashCapacity = 10000)
+        {
+            this.ua = "";
+            this.ip = "";
+            if (useLRUCash)
+                cache = new LRUCache<string, UserAgent>(LRUCashCapacity);
+
+            this.useCache = useLRUCash;
+            dt = new DataReader();
+            
+        }
+        #endregion
 
         #region setParser method
         /// <summary>
         /// Set the data directory
         /// </summary> 
-        /// <param name="dataDir">string path cache directory</param>
+        /// <param name="dataDir">string path udger DB directory</param>
         public void SetDataDir(string dataDir)
         {
             if (!Directory.Exists(dataDir))
@@ -89,10 +115,10 @@ namespace Udger.Parser
                 throw new Exception("Data file udgerdb_v3.dat not found");
         }
         /// <summary>
-        /// Set the data directory
+        /// Set the data directory and DB filename
         /// </summary> 
-        /// <param name="dataDir">string path cache directory</param>
-        /// <param name="fileName">string path cache directory</param>
+        /// <param name="dataDir">string path udger DB directory</param>
+        /// <param name="fileName">string path udger DB filename</param>
         public void SetDataDir(string dataDir, string fileName)
         {
             if (!Directory.Exists(dataDir))
@@ -122,7 +148,7 @@ namespace Udger.Parser
             {
                 if (this.ua != "")
                 {
-                    if (cache.TryGetValue(this.ua, out uaCache))
+                    if (useCache && cache.TryGetValue(this.ua, out uaCache))
                         userAgent = uaCache;
                     else
                     {
@@ -163,6 +189,9 @@ namespace Udger.Parser
                     this.processOS(_userAgent, ref os_id, client_id);
                     // device
                     this.processDevice(_userAgent, ref client_class_id);
+                    //set cache
+                    if(this.useCache)
+                        cache.Set(_userAgent, this.userAgent);
                 }
             }
 
@@ -288,6 +317,7 @@ namespace Udger.Parser
             }
         }
         #endregion
+
         #region prepare data methods
 
         private void prepareUa(DataRow _row,Boolean crawler,ref int clientId, ref int classId)
@@ -299,7 +329,7 @@ namespace Udger.Parser
             userAgent.CrawlerLastSeen = UdgerParser.ConvertToStr(_row["crawler_last_seen"]);
             userAgent.CrawlerRespectRobotstxt = UdgerParser.ConvertToStr(_row["crawler_respect_robotstxt"]);
             userAgent.UaString = this.ua;
-            userAgent.UaClass = UdgerParser.ConvertToStr(_row["ua_class"]);//ToString();
+            userAgent.UaClass = UdgerParser.ConvertToStr(_row["ua_class"]);
             userAgent.UaClassCode = UdgerParser.ConvertToStr(_row["ua_class_code"]);
             userAgent.Ua = UdgerParser.ConvertToStr(_row["ua"]);
             userAgent.UaVersion = UdgerParser.ConvertToStr(_row["ua_version"]);
@@ -483,7 +513,7 @@ namespace Udger.Parser
         System.Text.RegularExpressions.Regex searchTerm;
         PerlRegExpConverter regConv;
 
-         foreach (IdRegString irs in list)
+        foreach (IdRegString irs in list)
         {
             if ((irs.wordId1 == 0 || foundClientWords.Contains(irs.wordId1)) &&
                 (irs.wordId2 == 0 || foundClientWords.Contains(irs.wordId2)))

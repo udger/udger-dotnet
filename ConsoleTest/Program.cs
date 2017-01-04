@@ -8,12 +8,13 @@
   link       http://udger.com/products/local_parser
 */
 
-
+/*
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+*/
 using Udger.Parser;
 
 
@@ -23,63 +24,46 @@ namespace ConsoleTest
     {
 
         static void Main(string[] args)
-        {            
+        {
 
             Udger.Parser.UserAgent a;
             Udger.Parser.IPAddress i;
-            List<Udger.Parser.UserAgent> retsua = new List<UserAgent>();
-            List<Udger.Parser.IPAddress> retsip = new List<IPAddress>();
+
             // Create a new UdgerParser object
             UdgerParser parser = new UdgerParser();
+            // orCreate and set LRU Cache capacity
+            //UdgerParser parser = new UdgerParser(5000);
 
             // Set data dir (in this directory is stored data file: udgerdb_v3.dat)
-            // Data file can be downloaded manually from http://data.udger.com/, but we recommend use udger-updater
-            parser.SetDataDir(@"C:\tmp");
+            // Test data file is available on:  https://github.com/udger/test-data/tree/master/data_v3
+            // Full data file can be downloaded manually from http://data.udger.com/, but we recommend use udger-updater
+            parser.SetDataDir(@"C:\udger");
+            // or set data dir and DB filename
             //parser.SetDataDir(@"C:\udger", "udgerdb_v3-noip.dat ");
 
             // Set user agent and /or IP address
-            //parser.ua =@"Mozilla/5.0 (Linux; Android 4.4.4; eZee' Tab10010-S Build/KTU84Q) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/33.0.0.0 Safari/537.36";//@"Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13E238";
-            //parser.ip = "108.61.199.93";
-          
-            Console.WriteLine("start ua" + DateTime.Now.ToString("h:mm:ss.ffffff tt"));
-            using (StreamReader r = new StreamReader("test_ua.json"))
-            {
-                string json = r.ReadToEnd();
-                JArray stuff = JsonConvert.DeserializeObject<JArray>(json);
-                var test = stuff.SelectToken("test");
-                foreach (JToken jt in stuff)
-                {
-                    var s = jt["test"]["teststring"];
-                    parser.ua = s.ToString();
-                    parser.parse();
-                    retsua.Add(parser.userAgent);
-                }
-                //while(stuff.nec)
+            parser.ua = @"Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.2";
+            parser.ip = "77.75.74.35";
 
-            }
-            Console.WriteLine("end ua" + DateTime.Now.ToString("h:mm:ss.ffffff tt"));
+            // Parse
+            parser.parse();
+            
+            // Get information 
+            a = parser.userAgent;
+            i = parser.ipAddress;
 
-            Console.WriteLine("start ip" + DateTime.Now.ToString("h:mm:ss.ffffff tt"));
-            using (StreamReader r = new StreamReader("test_ip.json"))
-            {
-                string json = r.ReadToEnd();
-                JArray stuff = JsonConvert.DeserializeObject<JArray>(json);
-                var test = stuff.SelectToken("test");
-                foreach (JToken jt in stuff)
-                {
-                    var s = jt["test"]["teststring"];
-                    parser.ip = s.ToString();
-                    parser.parse();
-                    retsip.Add(parser.ipAddress);
-                }
-                //while(stuff.nec)
+            // Set user agent and /or IP address
+            parser.ua = @"Mozilla/5.0 (Linux; U; Android 4.0.4; sk-sk; Luna TAB474 Build/LunaTAB474) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30";
+            parser.parse();
+            a = parser.userAgent;
 
-            }
-            Console.WriteLine("end ip" + DateTime.Now.ToString("h:mm:ss.ffffff tt"));
-            Console.ReadKey();
+
+            parser.ip = "2a02:598:111::9";
+            parser.parse();
+            i = parser.ipAddress;
 
         }
 
-        
+
     }
 }
