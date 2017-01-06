@@ -282,11 +282,8 @@ namespace DataTest
                     Console.WriteLine("err UaVersionMajor: " + a.UaVersionMajor);              
 
             }
-            #endregion
-
-            
-            
-            
+            #endregion                      
+                        
         }
 
         #region utils

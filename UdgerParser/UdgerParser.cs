@@ -255,6 +255,7 @@ namespace Udger.Parser
             }
         }
         #endregion
+
         #region process methods
 
         private void processOS(string uaString, ref int os_id, int clientId)
