@@ -71,6 +71,7 @@ namespace Udger.Parser
             "vendor AS ua_family_vendor, " +
             "vendor_code AS ua_family_vendor_code, " +
             "vendor_homepage AS ua_family_vendor_homepage, " +
+            "regstring, " +
             "'https://udger.com/resources/ua-list/browser-detail?browser=' || REPLACE(name, ' ', '%20') AS ua_family_info_url " +
         "FROM " +
             "udger_client_regex ur " +
@@ -223,7 +224,7 @@ namespace Udger.Parser
         "FROM " +
             "udger_devicename_regex " +
         "WHERE " +
-            "os_family_code={0} AND (os_code='-all-' OR os_code={1}) " +
+            "os_family_code='{0}' AND (os_code='-all-' OR os_code='{1}') " +
         "ORDER BY sequence";
 
     public static readonly String SQL_DEVICE_NAME_LIST =
@@ -239,6 +240,6 @@ namespace Udger.Parser
         "JOIN " +
             "udger_devicename_brand ON udger_devicename_brand.id=udger_devicename_list.brand_id " +
         "WHERE " +
-            "regex_id = {0} AND code = {1}";
+            "regex_id = '{0}' AND code = '{1}'";
     }
 }

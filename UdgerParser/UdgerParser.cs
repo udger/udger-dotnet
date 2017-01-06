@@ -52,6 +52,9 @@ namespace Udger.Parser
         private static List<IdRegString> clientRegstringList;
         private static List<IdRegString> osRegstringList;
         private static List<IdRegString> deviceRegstringList;
+
+        private readonly Dictionary<string, Regex> regexCache = new Dictionary<string, Regex>();
+        private readonly Dictionary<string, string> preparedStmtMap = new Dictionary<string, string>();
         #endregion
 
         #region Constructor
@@ -189,8 +192,13 @@ namespace Udger.Parser
                     this.processOS(_userAgent, ref os_id, client_id);
                     // device
                     this.processDevice(_userAgent, ref client_class_id);
+
+                    if (userAgent.OsFamilyCode != null && userAgent.OsFamilyCode != "" )
+                    {
+                        this.processDeviceBrand();
+                    }
                     //set cache
-                    if(this.useCache)
+                    if (this.useCache)
                         cache.Set(_userAgent, this.userAgent);
                 }
             }
@@ -316,14 +324,74 @@ namespace Udger.Parser
                 }
             }
         }
+
+        private void processDeviceBrand()
+        {
+            System.Text.RegularExpressions.Regex reg;
+            PerlRegExpConverter regConv;
+
+            DataTable devRs = dt.selectQuery(String.Format(UdgerSqlQuery.SQL_DEVICE_REGEX,this.userAgent.OsFamilyCode,this.userAgent.OsCode));
+            if (devRs != null && devRs.Rows.Count > 0)
+            {
+                foreach (DataRow row in devRs.Rows)
+                {
+                    String devId = UdgerParser.ConvertToStr(row["id"]);
+                    String regex = UdgerParser.ConvertToStr(row["regstring"]);
+                    if (devId != null && regex != null)
+                    {
+                        regConv = new PerlRegExpConverter(regex, "", Encoding.UTF8);
+                        reg = regConv.Regex;                      
+                        if (reg.IsMatch(this.ua))
+                        {
+                            string foo = reg.Match(this.ua).Groups[1].ToString();
+                            DataTable devNameListRs = dt.selectQuery(String.Format(UdgerSqlQuery.SQL_DEVICE_NAME_LIST, devId, foo));
+                            if (devNameListRs != null && devNameListRs.Rows.Count > 0)
+                            {
+                                DataRow r = devNameListRs.Rows[0];
+                                userAgent.DeviceMarketname = UdgerParser.ConvertToStr(r["marketname"]);
+                                userAgent.DeviceBrand = UdgerParser.ConvertToStr(r["brand"]);
+                                userAgent.DeviceBrandCode = UdgerParser.ConvertToStr(r["brand_code"]);
+                                userAgent.DeviceBrandHomepage = UdgerParser.ConvertToStr(r["brand_url"]);
+                                userAgent.DeviceBrandIcon = UdgerParser.ConvertToStr(r["icon"]);
+                                userAgent.DeviceBrandIconBig = UdgerParser.ConvertToStr(r["icon_big"]);
+                                userAgent.DeviceBrandInfoUrl = @"https://udger.com/resources/ua-list/devices-brand-detail?brand=" + UdgerParser.ConvertToStr(r["brand_code"]);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         #endregion
 
         #region prepare data methods
 
         private void prepareUa(DataRow _row,Boolean crawler,ref int clientId, ref int classId)
         {
-            //clientId = Convert.ToInt32(_row["client_id"]);
-            //classId = Convert.ToInt32(_row["class_id"]);
+            System.Text.RegularExpressions.Regex searchTerm;
+            PerlRegExpConverter regConv;
+            string pattern = UdgerParser.ConvertToStr(_row["regstring"]);
+            Group group;
+
+            userAgent.Ua = UdgerParser.ConvertToStr(_row["ua"]);
+            userAgent.UaVersion = UdgerParser.ConvertToStr(_row["ua_version"]);
+            userAgent.UaVersionMajor = UdgerParser.ConvertToStr(_row["ua_version_major"]);
+
+            if (pattern != "")
+            {
+                regConv = new PerlRegExpConverter(pattern, "", Encoding.UTF8);
+                searchTerm = regConv.Regex;
+                if (searchTerm.IsMatch(this.ua) && (group = searchTerm.Match(this.ua).Groups[1]) != null )
+                {
+
+                    userAgent.Ua = UdgerParser.ConvertToStr(_row["ua"]) + " " + UdgerParser.ConvertToStr(group);
+                    userAgent.UaVersion = UdgerParser.ConvertToStr(group);
+                    userAgent.UaVersionMajor = UdgerParser.ConvertToStr(group).Split('.')[0];
+                }
+            }
+
+                    clientId = Convert.ToInt32(_row["client_id"]);
+            classId = Convert.ToInt32(_row["class_id"]);
             userAgent.CrawlerCategory = UdgerParser.ConvertToStr(_row["crawler_category"]);
             userAgent.CrawlerCategoryCode = UdgerParser.ConvertToStr(_row["crawler_category_code"]);
             userAgent.CrawlerLastSeen = UdgerParser.ConvertToStr(_row["crawler_last_seen"]);
@@ -331,9 +399,6 @@ namespace Udger.Parser
             userAgent.UaString = this.ua;
             userAgent.UaClass = UdgerParser.ConvertToStr(_row["ua_class"]);
             userAgent.UaClassCode = UdgerParser.ConvertToStr(_row["ua_class_code"]);
-            userAgent.Ua = UdgerParser.ConvertToStr(_row["ua"]);
-            userAgent.UaVersion = UdgerParser.ConvertToStr(_row["ua_version"]);
-            userAgent.UaVersionMajor = UdgerParser.ConvertToStr(_row["ua_version_major"]);
             userAgent.UaUptodateCurrentVersion = UdgerParser.ConvertToStr(_row["ua_uptodate_current_version"]);
             userAgent.UaFamily = UdgerParser.ConvertToStr(_row["ua_family"]);
             userAgent.UaFamilyCode = UdgerParser.ConvertToStr(_row["ua_family_code"]);
@@ -343,7 +408,7 @@ namespace Udger.Parser
             userAgent.UaFamilyVendorHomepage = UdgerParser.ConvertToStr(_row["ua_family_vendor_homepage"]);
             userAgent.UaFamilyIcon = UdgerParser.ConvertToStr(_row["ua_family_icon"]);
             userAgent.UaFamilyIconBig = UdgerParser.ConvertToStr(_row["ua_family_icon_big"]);
-            userAgent.UaFamilyIconUrl = UdgerParser.ConvertToStr(_row["ua_family_info_url"]);
+            userAgent.UaFamilyInfoUrl = UdgerParser.ConvertToStr(_row["ua_family_info_url"]);
             userAgent.UaEngine = UdgerParser.ConvertToStr(_row["ua_engine"]);
 
         }
@@ -373,6 +438,7 @@ namespace Udger.Parser
             userAgent.DeviceClassIcon = UdgerParser.ConvertToStr(_row["device_class_icon"]);
             userAgent.DeviceClassIconBig = UdgerParser.ConvertToStr(_row["device_class_icon_big"]);
             userAgent.DeviceClassInfoUrl =  UdgerParser.ConvertToStr(_row["device_class_info_url"]);
+
         }
 
         private void prepareIp(DataRow _row)
@@ -431,6 +497,7 @@ namespace Udger.Parser
             return dt;
         }
 
+ 
         private int getIPAddressVersion(string _ip, out string _retIp)
         {
             System.Net.IPAddress addr;
@@ -507,7 +574,7 @@ namespace Udger.Parser
                 }
             }
     }
-
+  
     private int findIdFromList(String uaString, HashSet<int> foundClientWords, List<IdRegString> list)
     {
         System.Text.RegularExpressions.Regex searchTerm;

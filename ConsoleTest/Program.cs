@@ -8,13 +8,10 @@
   link       http://udger.com/products/local_parser
 */
 
-/*
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
-*/
 using Udger.Parser;
 
 
@@ -42,7 +39,7 @@ namespace ConsoleTest
             //parser.SetDataDir(@"C:\udger", "udgerdb_v3-noip.dat ");
 
             // Set user agent and /or IP address
-            parser.ua = @"Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.2";
+            parser.ua = @"Mozilla/5.0 (compatible; SeznamBot/3.2; +http://fulltext.sblog.cz/)";
             parser.ip = "77.75.74.35";
 
             // Parse

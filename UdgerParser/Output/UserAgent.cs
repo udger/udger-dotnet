@@ -61,7 +61,7 @@ namespace Udger.Parser
         public string UaFamilyIconBig { get;   set; }
 
         [NamePosition(15, Name = "UaFamilyIconUrl")]
-        public string UaFamilyIconUrl { get;   set; }
+        public string UaFamilyInfoUrl { get;   set; }
 
         [NamePosition(16, Name = "UaEngine")]
         public string UaEngine { get;   set; }
@@ -125,6 +125,28 @@ namespace Udger.Parser
 
         [NamePosition(36, Name = "CrawlerRespectRobotstxt")]
         public string CrawlerRespectRobotstxt { get;   set; }
+
+        [NamePosition(37, Name = "DeviceMarketname")]
+        public string DeviceMarketname { get; set; }
+
+        [NamePosition(38, Name = "DeviceBrand")]
+        public string DeviceBrand { get; set; }
+
+        [NamePosition(39, Name = "DeviceBrandCode")]
+        public string DeviceBrandCode { get; set; }
+
+        [NamePosition(40, Name = "DeviceBrandHomepage")]
+        public string DeviceBrandHomepage { get; set; }
+
+        [NamePosition(41, Name = "DeviceBrandIcon")]
+        public string DeviceBrandIcon { get; set; }
+
+        [NamePosition(42, Name = "DeviceBrandIconBig")]
+        public string DeviceBrandIconBig { get; set; }
+
+        [NamePosition(43, Name = "DeviceBrandInfoUrl")]
+        public string DeviceBrandInfoUrl { get; set; }
+
         #endregion
         #region constructors
         public UserAgent()
