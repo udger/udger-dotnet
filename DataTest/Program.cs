@@ -282,10 +282,10 @@ namespace DataTest
                     Console.WriteLine("err UaVersionMajor: " + a.UaVersionMajor);              
 
             }
-            #endregion                      
-                        
+            #endregion
+            Console.ReadLine();           
         }
-
+       
         #region utils
         static String setNullEmpty(String x)
         {
@@ -295,5 +295,6 @@ namespace DataTest
             return x;
         }
         #endregion
+
     }
 }

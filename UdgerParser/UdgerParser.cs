@@ -371,28 +371,29 @@ namespace Udger.Parser
         {
             System.Text.RegularExpressions.Regex searchTerm;
             PerlRegExpConverter regConv;
-            string pattern = UdgerParser.ConvertToStr(_row["regstring"]);
             Group group;
 
             userAgent.Ua = UdgerParser.ConvertToStr(_row["ua"]);
             userAgent.UaVersion = UdgerParser.ConvertToStr(_row["ua_version"]);
             userAgent.UaVersionMajor = UdgerParser.ConvertToStr(_row["ua_version_major"]);
-
-            if (pattern != "")
+            if (!crawler)
             {
-                regConv = new PerlRegExpConverter(pattern, "", Encoding.UTF8);
-                searchTerm = regConv.Regex;
-                if (searchTerm.IsMatch(this.ua) && (group = searchTerm.Match(this.ua).Groups[1]) != null )
+                string pattern = UdgerParser.ConvertToStr(_row["regstring"]);
+                if (pattern != "")
                 {
+                    regConv = new PerlRegExpConverter(pattern, "", Encoding.UTF8);
+                    searchTerm = regConv.Regex;
+                    if (searchTerm.IsMatch(this.ua) && (group = searchTerm.Match(this.ua).Groups[1]) != null)
+                    {
 
-                    userAgent.Ua = UdgerParser.ConvertToStr(_row["ua"]) + " " + UdgerParser.ConvertToStr(group);
-                    userAgent.UaVersion = UdgerParser.ConvertToStr(group);
-                    userAgent.UaVersionMajor = UdgerParser.ConvertToStr(group).Split('.')[0];
+                        userAgent.Ua = UdgerParser.ConvertToStr(_row["ua"]) + " " + UdgerParser.ConvertToStr(group);
+                        userAgent.UaVersion = UdgerParser.ConvertToStr(group);
+                        userAgent.UaVersionMajor = UdgerParser.ConvertToStr(group).Split('.')[0];
+                    }
                 }
             }
-
-                    clientId = Convert.ToInt32(_row["client_id"]);
-            classId = Convert.ToInt32(_row["class_id"]);
+            clientId = UdgerParser.ConvertToInt(_row["client_id"]);
+            classId =  UdgerParser.ConvertToInt(_row["class_id"]);
             userAgent.CrawlerCategory = UdgerParser.ConvertToStr(_row["crawler_category"]);
             userAgent.CrawlerCategoryCode = UdgerParser.ConvertToStr(_row["crawler_category_code"]);
             userAgent.CrawlerLastSeen = UdgerParser.ConvertToStr(_row["crawler_last_seen"]);
@@ -479,14 +480,14 @@ namespace Udger.Parser
  
         private static string ConvertToStr(object value)
         {
-            if (value == null)
+            if (value == null || value.GetType() == typeof(DBNull))
                 return "";
             return value.ToString();
         }
 
         private static int ConvertToInt(object value)
         {
-            if (value == null)
+            if (value == null || value.GetType() == typeof(DBNull))
                 return 0;
             return Convert.ToInt32(value);
         }
