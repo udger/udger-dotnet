@@ -15,30 +15,33 @@ using System.Collections.Generic;
 
 namespace Udger.Parser
 {
-    class LRUCache<TKey,TValue>
+    /// <summary>
+    /// Class implementing cache of the <see cref="Node{TKey, TValue}"/> for parsing.
+    /// </summary>
+    /// <typeparam name="TKey">Type of key in dictionary.</typeparam>
+    /// <typeparam name="TValue">Type of the value store under the key.</typeparam>
+    class LRUCache<TKey,TValue> where TKey: class
+        where TValue: class 
     {
-        private readonly Dictionary<TKey, Node> entries;
-        private readonly int capacity;
-        private Node head;
-        private Node tail;
+        /// <summary>
+        /// Minimum capacity of the cache. This value is set to 1024 entries in the cache. 
+        /// </summary>
+        private const uint MinimumCacheCapacity = 1024;
 
-        private class Node
-        {
-            public Node Next { get; set; }
-            public Node Previous { get; set; }
-            public TKey Key { get; set; }
-            public TValue Value { get; set; }
-        }
+        private readonly Dictionary<TKey, Node<TKey, TValue>> entries;
+        private readonly int capacity;
+        private Node<TKey, TValue> head;
+        private Node<TKey, TValue> tail;
 
         #region Constructor
-        public LRUCache(int capacity)
+        public LRUCache(uint capacity)
         {
             if (capacity <= 0)
                 throw new ArgumentOutOfRangeException(
                     "capacity",
                     "Capacity should be greater than zero");
             this.capacity = capacity;
-            entries = new Dictionary<TKey, Node>();
+            entries = new Dictionary<TKey, Node<>>();
             head = null;
         }
         #endregion
