@@ -5,7 +5,7 @@
 namespace Udger.Parser.V3.Cache
 {
     /// <summary>
-    /// Interface which must be implemneted by every caching implementation.
+    /// Interface which must be implemented by every caching implementation.
     /// </summary>
     /// <typeparam name="TKey">Type of key.</typeparam>
     /// <typeparam name="TValue">Type of value.</typeparam>
@@ -14,7 +14,7 @@ namespace Udger.Parser.V3.Cache
         where TValue : class
     {
         /// <summary>
-        /// Gets the value frm the cache regarding the passed key.
+        /// Gets the value from the cache regarding the passed key.
         /// </summary>
         /// <param name="key">The key to look for in the cache.</param>
         /// <returns>Returns instance of the item if exists, otherwise returns null.</returns>
@@ -26,7 +26,7 @@ namespace Udger.Parser.V3.Cache
         /// <param name="key">The key to use for the identifier in the cache.</param>
         /// <param name="value">The value to store in the cache.</param>
         /// <remarks>
-        /// If the key in the cache exists it's calue is replaced.
+        /// If the key in the cache exists it's value is replaced.
         /// If the key does not exist the new entry is created.
         /// </remarks>
         void Push(TKey key, TValue value);

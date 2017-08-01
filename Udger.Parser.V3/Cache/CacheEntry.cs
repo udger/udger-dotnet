@@ -10,7 +10,7 @@ namespace Udger.Parser.V3.Cache
     using Udger.Parser.V3.Models;
 
     /// <summary>
-    /// Implemetation of the cache entry.
+    /// Implementation of the cache entry.
     /// </summary>
     public class CacheEntry
     {

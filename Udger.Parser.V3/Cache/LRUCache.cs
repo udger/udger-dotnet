@@ -8,6 +8,11 @@ namespace Udger.Parser.V3.Cache
     using System.Collections.Generic;
     using System.Text;
 
+    /// <summary>
+    /// Implementation of LRU cache with generic key and value types.
+    /// </summary>
+    /// <typeparam name="TKey">Type of key.</typeparam>
+    /// <typeparam name="TValue">Type of value.</typeparam>
     public class LRUCache<TKey, TValue> : ICache<TKey, TValue>
         where TKey : class
         where TValue : class
@@ -37,7 +42,7 @@ namespace Udger.Parser.V3.Cache
         }
 
         /// <summary>
-        /// Gets the value frm the cache regarding the passed key.
+        /// Gets the value from the cache regarding the passed key.
         /// </summary>
         /// <param name="key">The key to look for in the cache.</param>
         /// <returns>Returns instance of the item if exists, otherwise returns null.</returns>
@@ -48,8 +53,6 @@ namespace Udger.Parser.V3.Cache
                 return this.items[key];
             }
 
-
-
             return null;
         }
 
@@ -59,7 +62,7 @@ namespace Udger.Parser.V3.Cache
         /// <param name="key">The key to use for the identifier in the cache.</param>
         /// <param name="value">The value to store in the cache.</param>
         /// <remarks>
-        /// If the key in the cache exists it's calue is replaced.
+        /// If the key in the cache exists it's value is replaced.
         /// If the key does not exist the new entry is created.
         /// </remarks>
         /// <exception cref="ArgumentNullException">Throw if <paramref name="key"/> or <paramref name="value"/> is null.</exception>
@@ -74,8 +77,6 @@ namespace Udger.Parser.V3.Cache
             {
                 throw new ArgumentNullException(nameof(value));
             }
-
-
         }
     }
 }

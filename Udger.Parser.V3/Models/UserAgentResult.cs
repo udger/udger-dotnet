@@ -11,96 +11,234 @@ namespace Udger.Parser.V3.Models
     /// </summary>
     public class UserAgentResult : IEquatable<UserAgentResult>
     {
+        /// <summary>
+        /// Gets user agent string.
+        /// </summary>
         public string UserAgentString { get; }
 
+        /// <summary>
+        /// Gets client id.
+        /// </summary>
         public int ClientId { get; internal set; }
 
+        /// <summary>
+        /// Gets class id.
+        /// </summary>
         public int ClassId { get; internal set; }
 
+        /// <summary>
+        /// Gets or sets user agent class.
+        /// </summary>
         public string UserAgentClass { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent class code.
+        /// </summary>
         public string UserAgentClassCode { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent.
+        /// </summary>
         public string UserAgent { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent engine.
+        /// </summary>
         public string UserAgentEngine { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent version.
+        /// </summary>
         public string UserAgentVersion { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets major user agent version.
+        /// </summary>
         public string UserAgentVersionMajor { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets the last time when crawler has been seen.
+        /// </summary>
         public string CrawlerLastSeen { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets flag if crawler respects the robots.txt.
+        /// </summary>
         public string CrawlerRespectRobotstxt { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets crawler category.
+        /// </summary>
         public string CrawlerCategory { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets crawler category code.
+        /// </summary>
         public string CrawlerCategoryCode { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets flag if user agent is up to date.
+        /// </summary>
         public string UserAgentUptodateCurrentVersion { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent family.
+        /// </summary>
         public string UserAgentFamily { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent family code.
+        /// </summary>
         public string UserAgentFamilyCode { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent home page URL.
+        /// </summary>
         public string UserAgentFamilyHomepage { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent family icon.
+        /// </summary>
         public string UserAgentFamilyIcon { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent family big icon.
+        /// </summary>
         public string UserAgentFamilyIconBig { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent family vendor.
+        /// </summary>
         public string UserAgentFamilyVendor { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent family vendor code.
+        /// </summary>
         public string UserAgentFamilyVendorCode { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent family vendor home page.
+        /// </summary>
         public string UserAgentFamilyVendorHomepage { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets user agent family info URL.
+        /// </summary>
         public string UserAgentFamilyInfoUrl { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets operating system family.
+        /// </summary>
         public string OperatingSystemFamily { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets operating system family code.
+        /// </summary>
         public string OperatingSystemFamilyCode { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets operating system.
+        /// </summary>
         public string OperatingSystem { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets operating system code.
+        /// </summary>
         public string OperatingSystemCode { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets operating system homepage.
+        /// </summary>
         public string OperatingSystemHomePage { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets operating system icon.
+        /// </summary>
         public string OperatingSystemIcon { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets operating system big icon.
+        /// </summary>
         public string OperatingSystemIconBig { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets operating system family vendor.
+        /// </summary>
         public string OperatingSystemFamilyVendor { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets operating system family vendor code.
+        /// </summary>
         public string OperatingSystemFamilyVendorCode { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets operating system family vendor home page.
+        /// </summary>
         public string OperatingSystemFamilyVedorHomepage { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets operating system information URL.
+        /// </summary>
         public string OperatingSystemInfoUrl { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device class.
+        /// </summary>
         public string DeviceClass { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device class code.
+        /// </summary>
         public string DeviceClassCode { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device class icon.
+        /// </summary>
         public string DeviceClassIcon { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device big icon.
+        /// </summary>
         public string DeviceClassIconBig { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device class information URL.
+        /// </summary>
         public string DeviceClassInfoUrl { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device market name.
+        /// </summary>
         public string DeviceMarketname { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device brand.
+        /// </summary>
         public string DeviceBrand { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device brand code.
+        /// </summary>
         public string DeviceBrandCode { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device brand homepage.
+        /// </summary>
         public string DeviceBrandHomepage { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device brand icon.
+        /// </summary>
         public string DeviceBrandIcon { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device brand big icon.
+        /// </summary>
         public string DeviceBrandIconBig { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets device brand information URL.
+        /// </summary>
         public string DeviceBrandInfoUrl { get; set; } = string.Empty;
 
         /// <summary>
@@ -113,10 +251,10 @@ namespace Udger.Parser.V3.Models
         }
 
         /// <summary>
-        /// Comapres two isntances of <see cref="UserAgentResult"/>.
+        /// Compares two instances of <see cref="UserAgentResult"/>.
         /// </summary>
-        /// <param name="other">Instance to comapare with current one.</param>
-        /// <returns>Returns trie if instances are equal, otherwise returns false.</returns>
+        /// <param name="other">Instance to compare with current one.</param>
+        /// <returns>Returns true if instances are equal, otherwise returns false.</returns>
         public bool Equals(UserAgentResult other)
         {
             return other != null &&
@@ -169,15 +307,19 @@ namespace Udger.Parser.V3.Models
         }
 
         /// <summary>
-        /// Comapres two isntances of <see cref="UserAgentResult"/>.
+        /// Compares two instances of <see cref="UserAgentResult"/>.
         /// </summary>
-        /// <param name="other">Instance to comapare with current one.</param>
-        /// <returns>Returns trie if instances are equal, otherwise returns false.</returns>
+        /// <param name="other">Instance to compare with current one.</param>
+        /// <returns>Returns true if instances are equal, otherwise returns false.</returns>
         public override bool Equals(object other)
         {
             return this.Equals(other as UserAgentResult);
         }
 
+        /// <summary>
+        /// Gets the hash code of the instance.
+        /// </summary>
+        /// <returns>Returns hash code of the instance.</returns>
         public override int GetHashCode()
         {
             int prime = 31;
@@ -232,6 +374,10 @@ namespace Udger.Parser.V3.Models
             return result;
         }
 
+        /// <summary>
+        /// Gets the string presentation of the instance.
+        /// </summary>
+        /// <returns>Returns the string presentation of the instance.</returns>
         public override string ToString()
         {
             return $@"
