@@ -6,7 +6,6 @@ namespace Udger.Parser.V3.Cache
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
     /// Implementation of LRU cache with generic key and value types.
@@ -76,6 +75,15 @@ namespace Udger.Parser.V3.Cache
             if (value == null)
             {
                 throw new ArgumentNullException(nameof(value));
+            }
+
+            if (this.items.ContainsKey(key))
+            {
+                this.items[key] = value;
+            }
+            else
+            {
+                this.items.Add(key, value);
             }
         }
     }
