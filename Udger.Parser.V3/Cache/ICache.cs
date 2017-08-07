@@ -18,7 +18,7 @@ namespace Udger.Parser.V3.Cache
         /// </summary>
         /// <param name="key">The key to look for in the cache.</param>
         /// <returns>Returns instance of the item if exists, otherwise returns null.</returns>
-        TValue Pull(TKey key);
+        TValue Get(TKey key);
 
         /// <summary>
         /// Pushes the value to the cache under specific key.
@@ -29,6 +29,11 @@ namespace Udger.Parser.V3.Cache
         /// If the key in the cache exists it's value is replaced.
         /// If the key does not exist the new entry is created.
         /// </remarks>
-        void Push(TKey key, TValue value);
+        void Put(TKey key, TValue value);
+
+        /// <summary>
+        /// Removes all items from cache.
+        /// </summary>
+        void Clear();
     }
 }

@@ -7,6 +7,7 @@ namespace Udger.Parser.V3.Cache
     using System;
     using System.Collections.Generic;
     using System.Text;
+
     using Udger.Parser.V3.Models;
 
     /// <summary>
@@ -31,11 +32,11 @@ namespace Udger.Parser.V3.Cache
         /// <summary>
         /// Gets or sets user agent string.
         /// </summary>
-        public string UaString { get; set; }
+        public TKey UaString { get; set; }
 
         /// <summary>
         /// Gets or sets user agent result. <see cref="Udger.Parser.V3.Models.UserAgentResult"/>.
         /// </summary>
-        public UserAgentResult UaResult { get; set; }
+        public TValue UaResult { get; set; }
     }
 }
