@@ -52,7 +52,5 @@ WHERE
         /// Query for operating system columns.
         /// </summary>
         public const string OsColumns = @"";
-
-
     }
 }
