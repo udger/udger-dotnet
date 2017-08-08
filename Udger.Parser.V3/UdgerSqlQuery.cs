@@ -46,7 +46,40 @@ WHERE
         /// <summary>
         /// Query for clients.
         /// </summary>
-        public const string SqlClient = @"";
+        public const string SqlClient = @"
+        SELECT
+            ur.rowid,
+            client_id AS client_id,
+            class_id AS class_id,
+            client_classification AS ua_class,
+            client_classification_code AS ua_class_code,
+            name AS ua,
+            ngine AS ua_engine,
+            NULL AS ua_version,
+            NULL AS ua_version_major,
+            NULL AS crawler_last_seen,
+            NULL AS crawler_respect_robotstxt,
+            NULL AS crawler_category,
+            NULL AS crawler_category_code,
+            uptodate_current_version AS ua_uptodate_current_version,
+            name AS ua_family,
+            name_code AS ua_family_code,
+            homepage AS ua_family_homepage,
+            icon AS ua_family_icon,
+            icon_big AS ua_family_icon_big,
+            vendor AS ua_family_vendor,
+            vendor_code AS ua_family_vendor_code,
+            vendor_homepage AS ua_family_vendor_homepage,
+            'https://udger.com/resources/ua-list/browser-detail?browser=' || REPLACE(name, ' ', '%20') AS ua_family_info_url
+        FROM
+            udger_client_regex ur
+        JOIN
+            udger_client_list ON udger_client_list.id = ur.client_id
+        JOIN
+            udger_client_class ON udger_client_class.id = udger_client_list.class_id
+        WHERE
+            ur.rowid=?
+";
 
         /// <summary>
         /// Query for operating system columns.
