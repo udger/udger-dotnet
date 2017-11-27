@@ -16,7 +16,7 @@ It also provides information about IP addresses (Public proxies, VPN services, T
 - Fast
 - Written in C#
 - LRU cache
-- Released under the GNU (LGPL v.3)
+- Released under the MIT
 
 
 ### Usage
